@@ -60,6 +60,7 @@ spec:
       labels:
         app: kafka
     spec:
+      enableServiceLinks: false
       initContainers:
         - name: wait-for-zookeeper
           image: busybox:1.36
