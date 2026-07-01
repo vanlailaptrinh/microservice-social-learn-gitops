@@ -1,0 +1,59 @@
+global:
+  imagePullPolicy: IfNotPresent
+  secretName: social-app-secret
+
+kong:
+  enabled: true
+  image: kong:latest
+
+  service:
+    type: LoadBalancer
+
+  cors:
+    origins:
+      - "https://your-production-frontend-domain.com"
+
+  rateLimiting:
+    minute: 200
+    hour: 5000
+
+  requestSizeLimit:
+    allowedPayloadSize: 10
+    sizeUnit: megabytes
+
+  consumers:
+    - username: nhutanh09
+      jwtKey: nhutanh09
+      algorithm: HS256
+      secret: CHANGE_ME_IN_PROD_SECRET_MANAGEMENT
+
+services:
+  auth-service:
+    replicas: 2
+    image:
+      tag: prod-initial
+
+  upload-service:
+    replicas: 2
+    image:
+      tag: prod-initial
+
+  notification-service:
+    replicas: 2
+    image:
+      tag: prod-initial
+
+  post-service:
+    replicas: 2
+    image:
+      tag: prod-initial
+
+  message-service:
+    replicas: 2
+    image:
+      tag: prod-initial
+
+  recomment-service:
+    replicas: 1
+    image:
+      tag: prod-initial

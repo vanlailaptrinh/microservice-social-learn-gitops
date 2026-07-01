@@ -1,0 +1,185 @@
+global:
+  imagePullPolicy: Always
+  secretName: social-app-secret
+
+infra:
+  mongodb:
+    enabled: true
+    image: mongo:6
+    storage: 5Gi
+    port: 27017
+
+  redis:
+    enabled: true
+    image: redis:latest
+    storage: 2Gi
+    port: 6379
+
+  zookeeper:
+    enabled: true
+    image: confluentinc/cp-zookeeper:7.5.0
+    port: 2181
+
+  kafka:
+    enabled: true
+    image: confluentinc/cp-kafka:7.5.0
+    port: 9092
+
+kong:
+  enabled: true
+  image: kong:latest
+
+  service:
+    type: LoadBalancer
+
+  cors:
+    origins:
+      - "http://localhost:3000"
+      - "http://localhost:5173"
+      - "https://your-frontend-domain.com"
+
+  rateLimiting:
+    minute: 200
+    hour: 5000
+
+  requestSizeLimit:
+    allowedPayloadSize: 10
+    sizeUnit: megabytes
+
+  consumers:
+    - username: nhutanh09
+      jwtKey: nhutanh09
+      algorithm: HS256
+      secret: CHANGE_ME_IN_DEV_ONLY
+
+services:
+  auth-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/auth-service
+      tag: initial
+    port: 8081
+    requireJwt: false
+    routes:
+      - /auth
+      - /user
+      - /follow
+      - /admin
+    env:
+      NODE_ENV: production
+      MONGODB_URL: mongodb://mongodb:27017/auth_db
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: auth-service
+      KAFKA_GROUP_ID: auth-service-consumer
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      DEFAULT_AVATAR_ID: default-avatar
+      DEFAULT_AVATAR_URL: https://example.com/default-avatar.png
+      DEFAULT_AVATAR_TYPE: image/png
+      DEFAULT_AVATAR_NAME: default-avatar.png
+    secretEnv:
+      JWT_SECRET: JWT_SECRET
+      JWT_REFRESH_SECRET: JWT_REFRESH_SECRET
+
+  upload-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/upload-service
+      tag: initial
+    port: 8089
+    requireJwt: true
+    routes:
+      - /upload
+    env:
+      NODE_ENV: production
+      MONGODB_URL: mongodb://mongodb:27017/upload_db
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: upload-service
+      KAFKA_GROUP_ID: upload-service-consumer
+      APP_NAME: upload-service
+      REDIS_URL: redis://redis:6379
+      SUPABASE_BUCKET: your-bucket
+    secretEnv:
+      SUPABASE_URL: SUPABASE_URL
+      SUPABASE_ANON_KEY: SUPABASE_ANON_KEY
+
+  notification-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/notification-service
+      tag: initial
+    port: 8084
+    requireJwt: true
+    routes:
+      - /notification
+    env:
+      NODE_ENV: production
+      MONGODB_URL: mongodb://mongodb:27017/notification_db
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: notification-service
+      KAFKA_GROUP_ID: notification-service-consumer
+      APP_NAME: notification-service
+      REDIS_URL: redis://redis:6379
+
+  post-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/post-service
+      tag: initial
+    port: 8087
+    requireJwt: true
+    routes:
+      - /post
+      - /comment
+      - /likes
+    env:
+      NODE_ENV: production
+      MONGODB_URL: mongodb://mongodb:27017/post_db
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: post-service
+      KAFKA_GROUP_ID: post-service-consumer
+      APP_NAME: post-service
+      REDIS_URL: redis://redis:6379
+
+  message-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/message-service
+      tag: initial
+    port: 8093
+    requireJwt: true
+    routes:
+      - /messages
+      - /conversation
+    env:
+      NODE_ENV: production
+      MONGODB_URL: mongodb://mongodb:27017/message_db
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: message-service
+      KAFKA_GROUP_ID: message-service-consumer
+      APP_NAME: message-service
+      REDIS_URL: redis://redis:6379
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+
+  recomment-service:
+    enabled: true
+    replicas: 1
+    image:
+      repository: sociallearn.azurecr.io/recomment-service
+      tag: initial
+    port: 8086
+    requireJwt: true
+    routes:
+      - /recommend
+    env:
+      FLASK_ENV: production
+      MONGODB_URI: mongodb://mongodb:27017/recommend_db
+      KAFKA_BROKER: kafka:9092
+      APP_NAME: recomment-service
+      REDIS_URL: redis://redis:6379

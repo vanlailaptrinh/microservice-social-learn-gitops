@@ -1,0 +1,17 @@
+{{- if .Values.kong.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong
+spec:
+  type: {{ .Values.kong.service.type }}
+  selector:
+    app: kong
+  ports:
+    - name: proxy
+      port: 80
+      targetPort: 8000
+    - name: proxy-ssl
+      port: 443
+      targetPort: 8443
+{{- end }}

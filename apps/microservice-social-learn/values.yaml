@@ -1,0 +1,54 @@
+global:
+  imagePullPolicy: IfNotPresent
+  secretName: social-app-secret
+
+infra:
+  mongodb:
+    enabled: true
+    image: mongo:6
+    storage: 5Gi
+    port: 27017
+
+  redis:
+    enabled: true
+    image: redis:latest
+    storage: 2Gi
+    port: 6379
+
+  zookeeper:
+    enabled: true
+    image: confluentinc/cp-zookeeper:7.5.0
+    port: 2181
+
+  kafka:
+    enabled: true
+    image: confluentinc/cp-kafka:7.5.0
+    port: 9092
+
+kong:
+  enabled: true
+  image: kong:latest
+
+  service:
+    type: LoadBalancer
+
+  cors:
+    origins:
+      - "http://localhost:3000"
+      - "http://localhost:5173"
+
+  rateLimiting:
+    minute: 200
+    hour: 5000
+
+  requestSizeLimit:
+    allowedPayloadSize: 10
+    sizeUnit: megabytes
+
+  consumers:
+    - username: nhutanh09
+      jwtKey: nhutanh09
+      algorithm: HS256
+      secret: CHANGE_ME_IN_DEV_ONLY
+
+services: {}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: social-app
+description: Social app microservices deployed with Kong, MongoDB, Redis and Kafka
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

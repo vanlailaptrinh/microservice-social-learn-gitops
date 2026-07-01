@@ -1,0 +1,75 @@
+{{- if .Values.kong.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kong-config
+data:
+  kong.yaml: |
+    _format_version: "3.0"
+    _transform: true
+
+    services:
+    {{- range $name, $svc := .Values.services }}
+    {{- if $svc.enabled }}
+      - name: {{ $name }}
+        url: http://{{ $name }}:{{ $svc.port }}
+        routes:
+          - name: {{ $name }}-routes
+            paths:
+            {{- range $path := $svc.routes }}
+              - {{ $path }}
+            {{- end }}
+            strip_path: false
+        {{- if $svc.requireJwt }}
+        plugins:
+          - name: jwt
+        {{- end }}
+    {{- end }}
+    {{- end }}
+
+    plugins:
+      - name: cors
+        config:
+          origins:
+          {{- range $origin := .Values.kong.cors.origins }}
+            - "{{ $origin }}"
+          {{- end }}
+          methods:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - PATCH
+            - OPTIONS
+          headers:
+            - Accept
+            - Authorization
+            - Content-Type
+            - X-Requested-With
+          exposed_headers:
+            - X-Auth-Token
+          credentials: true
+          max_age: 3600
+
+      - name: rate-limiting
+        config:
+          minute: {{ .Values.kong.rateLimiting.minute }}
+          hour: {{ .Values.kong.rateLimiting.hour }}
+          policy: local
+          fault_tolerant: true
+          hide_client_headers: false
+
+      - name: request-size-limiting
+        config:
+          allowed_payload_size: {{ .Values.kong.requestSizeLimit.allowedPayloadSize }}
+          size_unit: {{ .Values.kong.requestSizeLimit.sizeUnit }}
+
+    consumers:
+    {{- range $consumer := .Values.kong.consumers }}
+      - username: {{ $consumer.username }}
+        jwt_secrets:
+          - key: {{ $consumer.jwtKey }}
+            algorithm: {{ $consumer.algorithm }}
+            secret: {{ $consumer.secret }}
+    {{- end }}
+{{- end }}
