@@ -37,6 +37,7 @@ kong:
       - "http://localhost:3000"
       - "http://localhost:5173"
       - "https://your-frontend-domain.com"
+      - "https://app.hatruong.id.vn"
 
   rateLimiting:
     minute: 200
