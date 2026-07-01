@@ -49,6 +49,6 @@ kong:
     - username: nhutanh09
       jwtKey: nhutanh09
       algorithm: HS256
-      secret: CHANGE_ME_IN_DEV_ONLY
+      secret: "${JWT_SECRET}"
 
 services: {}

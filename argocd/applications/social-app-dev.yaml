@@ -7,7 +7,7 @@ spec:
   project: default
 
   source:
-    repoURL: git@github.com:YOUR_ORG/social-app-gitops.git
+    repoURL: git@github.com:vanlailaptrinh/microservice-social-learn-gitops.git
     targetRevision: main
     path: apps/microservice-social-learn
     helm:
