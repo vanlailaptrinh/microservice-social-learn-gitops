@@ -61,4 +61,19 @@ spec:
     - name: redis
       port: {{ .Values.infra.redis.port }}
       targetPort: {{ .Values.infra.redis.port }}
+
+---
+# Alias service for apps that hardcode 'my-redis' as hostname
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-redis
+spec:
+  type: ClusterIP
+  selector:
+    app: redis
+  ports:
+    - name: redis
+      port: {{ .Values.infra.redis.port }}
+      targetPort: {{ .Values.infra.redis.port }}
 {{- end }}
