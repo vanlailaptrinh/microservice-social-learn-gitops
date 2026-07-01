@@ -55,7 +55,7 @@ kong:
 services:
   auth-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/auth-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
@@ -84,7 +84,7 @@ services:
 
   upload-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/upload-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
@@ -107,7 +107,7 @@ services:
 
   notification-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/notification-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
@@ -126,7 +126,7 @@ services:
 
   post-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/post-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
@@ -147,7 +147,7 @@ services:
 
   message-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/message-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
@@ -169,7 +169,7 @@ services:
 
   recomment-service:
     enabled: true
-    replicas: 1
+    replicas: 2
     image:
       repository: sociallearn.azurecr.io/recomment-service
       tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
