@@ -17,6 +17,31 @@ spec:
       labels:
         app: {{ $name }}
     spec:
+      initContainers:
+        - name: wait-for-kafka
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Kafka at kafka:9092..."
+              until nc -z kafka 9092; do
+                echo "Kafka not ready, retrying in 3s..."
+                sleep 3
+              done
+              echo "Kafka is ready!"
+        - name: wait-for-mongodb
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for MongoDB at mongodb:27017..."
+              until nc -z mongodb 27017; do
+                echo "MongoDB not ready, retrying in 3s..."
+                sleep 3
+              done
+              echo "MongoDB is ready!"
       containers:
         - name: {{ $name }}
           image: "{{ $svc.image.repository }}:{{ $svc.image.tag }}"
