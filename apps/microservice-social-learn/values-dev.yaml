@@ -59,7 +59,7 @@ services:
     replicas: 2
     image:
       repository: sociallearn.azurecr.io/auth-service
-      tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
+      tag: 0ed89507b733854a2ec90b2f8a2d93b6f7ee3ca5
     port: 8081
     requireJwt: false
     routes:
@@ -131,7 +131,7 @@ services:
     replicas: 2
     image:
       repository: sociallearn.azurecr.io/post-service
-      tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
+      tag: 0ed89507b733854a2ec90b2f8a2d93b6f7ee3ca5
     port: 8087
     requireJwt: true
     routes:
@@ -152,7 +152,7 @@ services:
     replicas: 2
     image:
       repository: sociallearn.azurecr.io/message-service
-      tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
+      tag: 0ed89507b733854a2ec90b2f8a2d93b6f7ee3ca5
     port: 8093
     requireJwt: true
     routes:
@@ -174,7 +174,7 @@ services:
     replicas: 2
     image:
       repository: sociallearn.azurecr.io/recomment-service
-      tag: b8c943af4bcd083ffa824a143a8f92e121e5c682
+      tag: 0ed89507b733854a2ec90b2f8a2d93b6f7ee3ca5
     port: 8086
     requireJwt: true
     routes:
