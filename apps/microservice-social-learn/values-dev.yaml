@@ -174,7 +174,7 @@ services:
     replicas: 2
     image:
       repository: sociallearn.azurecr.io/recomment-service
-      tag: 1385127b7720ff55d99e84bd16b748a763c9b0ad
+      tag: f11186793f8d9048802ec6950ff9c8d70e0d9ebc
     port: 8086
     requireJwt: true
     routes:
