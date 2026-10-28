@@ -77,7 +77,7 @@ services:
       REDIS_PORT: "6379"
       REDIS_URL: redis://redis:6379
       DEFAULT_AVATAR_ID: "a94b0855-0bc4-4f4a-a87d-5aaf99e84da1"
-      DEFAULT_AVATAR_URL: "https://nlyexidgtzdfthpbmrba.supabase.co/storage/v1/object/sign/uploads/IMG_7884.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9hMzZjMDg0MC05YmExLTQ4MWYtYWMxYy0xY2ZkYTlmM2U1NzEiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ1cGxvYWRzL0lNR183ODg0LmpwZWciLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzgyMzc3NzE4LCJleHAiOjE3ODQ5Njk3MTh9.gapzoX592WHYDKc0j0QkJzzmlCSzDRI-7ExwjD4p_4E"
+      DEFAULT_AVATAR_URL: ""
       DEFAULT_AVATAR_TYPE: "image/jpeg"
       DEFAULT_AVATAR_NAME: "default-avatar.jpg"
     secretEnv:
